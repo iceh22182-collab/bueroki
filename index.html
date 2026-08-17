@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BüroKI – Büroassistent für Handwerksbetriebe</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#f5f7fb;
+  color:#172033;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+header{
+  background:#fff;
+  border-bottom:1px solid #e3e7ef;
+  padding:18px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:800;
+}
+
+.logo b{color:#2357ff}
+
+header span{
+  color:#687386;
+  font-size:14px;
+}
+
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:30px 20px 60px;
+}
+
+.hero{
+  margin-bottom:25px;
+}
+
+.hero h1{
+  margin:0 0 8px;
+  font-size:38px;
+}
+
+.hero p{
+  margin:0;
+  color:#687386;
+}
+
+.nav{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  margin:25px 0;
+  padding-bottom:5px;
+}
+
+.nav button{
+  white-space:nowrap;
+  border:1px solid #dce2ec;
+  background:#fff;
+  color:#39445a;
+  padding:11px 15px;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.nav button.active{
+  background:#2357ff;
+  color:white;
+  border-color:#2357ff;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.card{
+  background:#fff;
+  border:1px solid #e1e6ef;
+  border-radius:16px;
+  padding:22px;
+  margin-bottom:18px;
+  box-shadow:0 6px 22px rgba(0,0,0,.04);
+}
+
+.card h2{
+  margin-top:0;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+
+label{
+  display:block;
+  font-weight:700;
+  margin:12px 0 6px;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid #d8deea;
+  border-radius:9px;
+  font:inherit;
+  background:#fff;
+}
+
+textarea{
+  min-height:130px;
+  resize:vertical;
+}
+
+button.primary{
+  margin-top:15px;
+  background:#2357ff;
+  color:white;
+  border:0;
+  border-radius:9px;
+  padding:12px 18px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+button.secondary{
+  margin-top:15px;
+  background:#eef2ff;
+  color:#2357ff;
+  border:0;
+  border-radius:9px;
+  padding:12px 18px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+.stat{
+  background:#fff;
+  border:1px solid #e1e6ef;
+  border-radius:14px;
+  padding:18px;
+}
+
+.stat strong{
+  display:block;
+  font-size:25px;
+  margin-top:5px;
+}
+
+.muted{
+  color:#687386;
+}
+
+.invoice{
+  border:1px solid #dfe4ed;
+  border-radius:12px;
+  padding:18px;
+  margin-top:15px;
+}
+
+.invoice-header{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.total{
+  font-size:22px;
+  font-weight:800;
+  text-align:right;
+}
+
+.out{
+  margin-top:15px;
+  background:#f7f8fc;
+  border-radius:10px;
+  padding:18px;
+  white-space:pre-wrap;
+  line-height:1.6;
+}
+
+@media(max-width:750px){
+  header span{display:none}
+  .hero h1{font-size:30px}
+  .grid,.stats{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Büro<b>KI</b></div>
+  <span>Digitaler Büroassistent für Handwerksbetriebe</span>
+</header>
+
+<main>
+
+<section class="hero">
+  <h1>Weniger Büro. Mehr Zeit für Kunden.</h1>
+  <p>Dein digitaler Büroassistent für Kunden, Angebote, Rechnungen und E-Mails.</p>
+</section>
+
+<div class="nav">
+  <button class="active" onclick="showPage('dashboard',this)">🏠 Übersicht</button>
+  <button onclick="showPage('company',this)">🏢 Unternehmen</button>
+  <button onclick="showPage('customers',this)">👥 Kunden</button>
+  <button onclick="showPage('services',this)">📦 Leistungen</button>
+  <button onclick="showPage('invoice',this)">🧾 Rechnung</button>
+  <button onclick="showPage('email',this)">✉️ E-Mail-KI</button>
+</div>
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+<div class="stats">
+  <div class="stat">
+    Kunden
+    <strong id="customerCount">0</strong>
+  </div>
+
+  <div class="stat">
+    Leistungen
+    <strong id="serviceCount">0</strong>
+  </div>
+
+  <div class="stat">
+    Rechnungen
+    <strong id="invoiceCount">0</strong>
+  </div>
+
+  <div class="stat">
+    Umsatz
+    <strong id="revenue">0,00 €</strong>
+  </div>
+</div>
+
+<div class="card" style="margin-top:20px">
+  <h2>Willkommen bei BüroKI 👋</h2>
+  <p class="muted">
+    Richte zuerst dein Unternehmen ein. Danach kannst du Kunden,
+    Leistungen und Rechnungen verwalten.
+  </p>
+  <button class="primary" onclick="openCompany()">Unternehmen einrichten</button>
+</div>
+
+</section>
+
+
+<!-- COMPANY -->
+
+<section id="company" class="page">
+
+<div class="card">
+  <h2>🏢 Unternehmensprofil</h2>
+  <p class="muted">Diese Angaben werden später automatisch auf Angeboten und Rechnungen verwendet.</p>
+
+  <div class="grid">
+
+    <div>
+      <label>Firmenname</label>
+      <input id="companyName" placeholder="Muster Handwerk GmbH">
+    </div>
+
+    <div>
+      <label>Inhaber</label>
+      <input id="owner" placeholder="Max Mustermann">
+    </div>
+
+    <div>
+      <label>Straße & Hausnummer</label>
+      <input id="address" placeholder="Musterstraße 10">
+    </div>
+
+    <div>
+      <label>PLZ & Ort</label>
+      <input id="city" placeholder="10115 Berlin">
+    </div>
+
+    <div>
+      <label>Telefon</label>
+      <input id="phone" placeholder="+49 30 12345678">
+    </div>
+
+    <div>
+      <label>E-Mail</label>
+      <input id="companyEmail" placeholder="info@firma.de">
+    </div>
+
+    <div>
+      <label>Steuernummer</label>
+      <input id="taxNumber" placeholder="12/345/67890">
+    </div>
+
+    <div>
+      <label>USt-IdNr.</label>
+      <input id="vatId" placeholder="DE123456789">
+    </div>
+
+  </div>
+
+  <button class="primary" onclick="saveCompany()">Unternehmen speichern</button>
+
+  <div id="companySaved" class="out" style="display:none">
+    ✅ Unternehmensdaten gespeichert.
+  </div>
+</div>
+
+</section>
+
+
+<!-- CUSTOMERS -->
+
+<section id="customers" class="page">
+
+<div class="card">
+  <h2>👥 Kunden</h2>
+
+  <div class="grid">
+    <div>
+      <label>Name</label>
+      <input id="customerName" placeholder="Max Mustermann">
+    </div>
+
+    <div>
+      <label>E-Mail</label>
+      <input id="customerEmail" placeholder="kunde@email.de">
+    </div>
+
+    <div>
+      <label>Straße</label>
+      <input id="customerAddress" placeholder="Kundenstraße 5">
+    </div>
+
+    <div>
+      <label>PLZ & Ort</label>
+      <input id="customerCity" placeholder="10115 Berlin">
+    </div>
+  </div>
+
+  <button class="primary" onclick="addCustomer()">Kunde speichern</button>
+</div>
+
+<div class="card">
+  <h2>Gespeicherte Kunden</h2>
+  <div id="customerList" class="muted">Noch keine Kunden vorhanden.</div>
+</div>
+
+</section>
+
+
+<!-- SERVICES -->
+
+<section id="services" class="page">
+
+<div class="card">
+  <h2>📦 Leistungen & Produkte</h2>
+
+  <div class="grid">
+    <div>
+      <label>Bezeichnung</label>
+      <input id="serviceName" placeholder="Wand streichen">
+    </div>
+
+    <div>
+      <label>Preis netto (€)</label>
+      <input id="servicePrice" type="number" step="0.01" placeholder="250">
+    </div>
+
+    <div>
+      <label>Einheit</label>
+      <select id="serviceUnit">
+        <option>Stück</option>
+        <option>Stunde</option>
+        <option>m²</option>
+        <option>Pauschal</option>
+      </select>
+    </div>
+
+    <div>
+      <label>MwSt.</label>
+      <select id="serviceVat">
+        <option value="19">19%</option>
+        <option value="7">7%</option>
+        <option value="0">0%</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="primary" onclick="addService()">Leistung speichern</button>
+</div>
+
+<div class="card">
+  <h2>Gespeicherte Leistungen</h2>
+  <div id="serviceList" class="muted">Noch keine Leistungen vorhanden.</div>
+</div>
+
+</section>
+
+
+<!-- INVOICE -->
+
+<section id="invoice" class="page">
+
+<div class="card">
+  <h2>🧾 Rechnung erstellen</h2>
+
+  <label>Kunde</label>
+  <select id="invoiceCustomer"></select>
+
+  <label>Leistung</label>
+  <select id="invoiceService"></select>
+
+  <label>Menge</label>
+  <input id="invoiceQty" type="number" value="1" min="1">
+
+  <button class="primary" onclick="createInvoice()">Rechnung erstellen</button>
+
+  <div id="invoiceResult"></div>
+</div>
+
+</section>
+
+
+<!-- EMAIL -->
+
+<section id="email" class="page">
+
+<div class="card">
+  <h2>✉️ E-Mail-Assistent</h2>
+  <p class="muted">
+    Kunden-E-Mails in professionelle deutsche Antworten verwandeln.
+  </p>
+
+  <label>Antwortstil</label>
+  <select id="emailStyle">
+    <option>Professionell</option>
+    <option>Freundlich</option>
+    <option>Kurz & direkt</option>
+  </select>
+
+  <label>Kundennachricht</label>
+  <textarea id="customerMessage"
+  placeholder="Hier die E-Mail des Kunden einfügen..."></textarea>
+
+  <button class="primary" onclick="generateEmail()">Antwort erstellen</button>
+
+  <div id="emailResult" class="out">
+    Ihre Antwort erscheint hier.
+  </div>
+</div>
+
+</section>
+
+</main>
+
+
+<script>
+
+let customers =
+JSON.parse(localStorage.getItem("bueroki_customers") || "[]");
+
+let services =
+JSON.parse(localStorage.getItem("bueroki_services") || "[]");
+
+let invoices =
+JSON.parse(localStorage.getItem("bueroki_invoices") || "[]");
+
+
+function showPage(id,button){
+
+  document.querySelectorAll(".page")
+    .forEach(p=>p.classList.remove("active"));
+
+  document.getElementById(id)
+    .classList.add("active");
+
+  document.querySelectorAll(".nav button")
+    .forEach(b=>b.classList.remove("active"));
+
+  button.classList.add("active");
+
+  refresh();
+}
+
+
+function openCompany(){
+  document.querySelectorAll(".nav button")[1].click();
+}
+
+
+function saveCompany(){
+
+  let company={
+    name:document.getElementById("companyName").value,
+    owner:document.getElementById("owner").value,
+    address:document.getElementById("address").value,
+    city:document.getElementById("city").value,
+    phone:document.getElementById("phone").value,
+    email:document.getElementById("companyEmail").value,
+    tax:document.getElementById("taxNumber").value,
+    vat:document.getElementById("vatId").value
+  };
+
+  localStorage.setItem("bueroki_company",
+    JSON.stringify(company));
+
+  document.getElementById("companySaved").style.display="block";
+}
+
+
+function addCustomer(){
+
+  let name=document.getElementById("customerName").value.trim();
+
+  if(!name){
+    alert("Bitte Kundennamen eingeben.");
+    return;
+  }
+
+  customers.push({
+    name:name,
+    email:document.getElementById("customerEmail").value,
+    address:document.getElementById("customerAddress").value,
+    city:document.getElementById("customerCity").value
+  });
+
+  localStorage.setItem(
+    "bueroki_customers",
+    JSON.stringify(customers)
+  );
+
+  document.getElementById("customerName").value="";
+  document.getElementById("customerEmail").value="";
+  document.getElementById("customerAddress").value="";
+  document.getElementById("customerCity").value="";
+
+  refresh();
+}
+
+
+function addService(){
+
+  let name=document.getElementById("serviceName").value.trim();
+  let price=parseFloat(document.getElementById("servicePrice").value);
+
+  if(!name || isNaN(price)){
+    alert("Bitte Bezeichnung und Preis eingeben.");
+    return;
+  }
+
+  services.push({
+    name:name,
+    price:price,
+    unit:document.getElementById("serviceUnit").value,
+    vat:parseFloat(document.getElementById("serviceVat").value)
+  });
+
+  localStorage.setItem(
+    "bueroki_services",
+    JSON.stringify(services)
+  );
+
+  document.getElementById("serviceName").value="";
+  document.getElementById("servicePrice").value="";
+
+  refresh();
+}
+
+
+function createInvoice(){
+
+  let ci=document.getElementById("invoiceCustomer").value;
+  let si=document.getElementById("invoiceService").value;
+
+  if(ci==="" || si===""){
+    alert("Bitte Kunde und Leistung auswählen.");
+    return;
+  }
+
+  let customer=customers[ci];
+  let service=services[si];
+
+  let qty=parseFloat(document.getElementById("invoiceQty").value) || 1;
+
+  let netto=service.price*qty;
+  let vat=netto*service.vat/100;
+  let total=netto+vat;
+
+  let number="RE-"+Date.now();
+
+  invoices.push({
+    number:number,
+    customer:customer.name,
+    service:service.name,
+    netto:netto,
+    vat:vat,
+    total:total
+  });
+
+  localStorage.setItem(
+    "bueroki_invoices",
+    JSON.stringify(invoices)
+  );
+
+  document.getElementById("invoiceResult").innerHTML=`
+
+  <div class="invoice">
+
+    <div class="invoice-header">
+      <div>
+        <strong>RECHNUNG</strong><br>
+        ${number}
+      </div>
+
+      <div>
+        <strong>${customer.name}</strong><br>
+        ${customer.address || ""}<br>
+        ${customer.city || ""}
+      </div>
+    </div>
+
+    <hr>
+
+    <p>
+      ${service.name}<br>
+      ${qty} × ${service.price.toFixed(2)} €
+    </p>
+
+    <p>Netto: ${netto.toFixed(2)} €</p>
+    <p>MwSt. (${service.vat}%): ${vat.toFixed(2)} €</p>
+
+    <div class="total">
+      Gesamt: ${total.toFixed(2)} €
+    </div>
+
+    <button class="secondary" onclick="window.print()">
+      🖨️ Rechnung drucken
+    </button>
+
+  </div>
+
+  `;
+
+  refresh();
+}
+
+
+function generateEmail(){
+
+  let style=document.getElementById("emailStyle").value;
+
+  let message=document.getElementById("customerMessage").value.trim();
+
+  if(!message){
+    alert("Bitte zuerst eine Kundennachricht eingeben.");
+    return;
+  }
+
+  let answer="";
+
+  if(style==="Kurz & direkt"){
+
+    answer=
+`Guten Tag,
+
+vielen Dank für Ihre Nachricht.
+
+Wir prüfen den gewünschten Termin und melden uns schnellstmöglich mit einer Rückmeldung.
+
+Mit freundlichen Grüßen
+Ihr Team`;
+
+  }else if(style==="Freundlich"){
+
+    answer=
+`Guten Tag,
+
+vielen Dank für Ihre Nachricht und Ihr Interesse.
+
+Wir prüfen den gewünschten Termin und melden uns schnellstmöglich mit einer konkreten Rückmeldung.
+
+Viele Grüße
+Ihr Team`;
+
+  }else{
+
+    answer=
+`Sehr geehrte Damen und Herren,
+
+vielen Dank für Ihre Nachricht.
+
+Wir prüfen den gewünschten Termin und melden uns schnellstmöglich mit einer konkreten Rückmeldung.
+
+Mit freundlichen Grüßen
+Ihr Team`;
+
+  }
+
+  document.getElementById("emailResult").textContent=answer;
+}
+
+
+function refresh(){
+
+  document.getElementById("customerCount").textContent=
+    customers.length;
+
+  document.getElementById("serviceCount").textContent=
+    services.length;
+
+  document.getElementById("invoiceCount").textContent=
+    invoices.length;
+
+  let revenue=invoices.reduce(
+    (sum,i)=>sum+i.total,0
+  );
+
+  document.getElementById("revenue").textContent=
+    revenue.toLocaleString("de-DE",{
+      style:"currency",
+      currency:"EUR"
+    });
+
+
+  let cl=document.getElementById("customerList");
+
+  if(customers.length===0){
+
+    cl.textContent="Noch keine Kunden vorhanden.";
+
+  }else{
+
+    cl.innerHTML=customers.map((c,i)=>
+      `<div class="invoice">
+        <strong>${i+1}. ${c.name}</strong><br>
+        ${c.email || ""}
+        <br>${c.city || ""}
+      </div>`
+    ).join("");
+  }
+
+
+  let sl=document.getElementById("serviceList");
+
+  if(services.length===0){
+
+    sl.textContent="Noch keine Leistungen vorhanden.";
+
+  }else{
+
+    sl.innerHTML=services.map((s,i)=>
+      `<div class="invoice">
+        <strong>${i+1}. ${s.name}</strong><br>
+        ${s.price.toFixed(2)} € / ${s.unit}
+        · MwSt. ${s.vat}%
+      </div>`
+    ).join("");
+  }
+
+
+  let cs=document.getElementById("invoiceCustomer");
+
+  cs.innerHTML=
+    `<option value="">Kunde auswählen</option>`+
+    customers.map((c,i)=>
+      `<option value="${i}">${c.name}</option>`
+    ).join("");
+
+
+  let ss=document.getElementById("invoiceService");
+
+  ss.innerHTML=
+    `<option value="">Leistung auswählen</option>`+
+    services.map((s,i)=>
+      `<option value="${i}">
+        ${s.name} – ${s.price.toFixed(2)} €
+      </option>`
+    ).join("");
+}
+
+
+refresh();
+
+</script>
+
+</body>
+</html>
