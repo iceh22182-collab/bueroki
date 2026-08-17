@@ -1,12 +1,5 @@
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
-
 export default async function handler(req, res) {
 
-  // فقط POST
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -31,42 +24,68 @@ export default async function handler(req, res) {
 Du bist ein professioneller digitaler Büroassistent
 für einen kleinen Handwerksbetrieb in Deutschland.
 
-Deine Aufgabe ist es, Kundenkommunikation professionell
-und natürlich zu formulieren.
+Erstelle eine passende Antwort auf die folgende
+Kundennachricht.
 
 Sprache: ${language}
-Antwortstil: ${style}
+Stil: ${style}
 
 Kundennachricht:
 ${message}
 
-Erstelle eine passende fertige Antwort.
-
 Regeln:
 - Schreibe direkt die fertige Antwort.
 - Keine Erklärung vor der Antwort.
-- Keine erfundenen Termine, Preise oder Zusagen.
+- Keine erfundenen Termine.
+- Keine erfundenen Preise.
+- Keine erfundenen Zusagen.
 - Wenn Informationen fehlen, formuliere vorsichtig.
-- Bei professionellen Antworten freundlich und seriös bleiben.
+- Die Antwort soll natürlich, freundlich und professionell sein.
 `;
 
-    const response = await client.responses.create({
-      model: "gpt-5.6",
-      input: prompt
-    });
+    const response = await fetch(
+      "https://api.openai.com/v1/responses",
+      {
+        method: "POST",
 
-    const text = response.output_text || "";
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        },
+
+        body: JSON.stringify({
+          model: "gpt-5.6",
+          input: prompt
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+      console.error("OpenAI Error:", data);
+
+      return res.status(response.status).json({
+        error: "OpenAI API Fehler"
+      });
+    }
+
+    const text =
+      data.output_text ||
+      data.output?.[0]?.content?.[0]?.text ||
+      "";
 
     return res.status(200).json({
-      text: text
+      text
     });
 
   } catch (error) {
 
-    console.error("OpenAI API Error:", error);
+    console.error("Server Error:", error);
 
     return res.status(500).json({
-      error: "Die KI konnte nicht erreicht werden."
+      error: "Interner Serverfehler"
     });
   }
 }
