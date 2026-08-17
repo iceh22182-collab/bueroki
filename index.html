@@ -1,40 +1,607 @@
-<!doctype html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BüroKI – Weniger Büro, mehr Zeit</title>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BüroKI – E-Mail-Assistent</title>
+
 <style>
-body{margin:0;background:#f6f7fb;color:#172033;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-header{background:white;border-bottom:1px solid #e3e7ef;padding:20px 6%;display:flex;justify-content:space-between}
-.logo{font-weight:800;font-size:22px}.logo b{color:#2357ff}
-main{max-width:1050px;margin:auto;padding:60px 22px}.hero{display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center}
-h1{font-size:48px;line-height:1.05}.lead{font-size:18px;color:#687386;line-height:1.6}
-.card{background:white;border:1px solid #e3e7ef;border-radius:18px;padding:22px;box-shadow:0 10px 30px #0000000d}
-textarea,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;font:inherit;box-sizing:border-box}textarea{min-height:150px}
-button{margin-top:12px;background:#2357ff;color:white;border:0;border-radius:9px;padding:12px 18px;font-weight:700;cursor:pointer}
-.out{margin-top:15px;background:#f8f9fc;padding:15px;border-radius:9px;white-space:pre-wrap;line-height:1.55}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:25px}.feature{background:white;padding:20px;border:1px solid #e3e7ef;border-radius:14px}
-@media(max-width:750px){.hero,.grid{grid-template-columns:1fr}h1{font-size:38px}}
-</style></head>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background: #f5f7fb;
+  color: #172033;
+}
+
+header {
+  background: white;
+  border-bottom: 1px solid #e3e7ef;
+  padding: 18px 24px;
+}
+
+.header-inner {
+  max-width: 1150px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.logo span {
+  color: #2357ff;
+}
+
+.header-tag {
+  color: #687083;
+  font-size: 14px;
+}
+
+main {
+  max-width: 1150px;
+  margin: auto;
+  padding: 55px 22px 80px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 45px;
+  align-items: center;
+}
+
+.badge {
+  display: inline-block;
+  color: #2357ff;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+h1 {
+  font-size: 52px;
+  line-height: 1.05;
+  margin: 0 0 20px;
+}
+
+.lead {
+  color: #687083;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e1e6ef;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 12px 35px rgba(20, 35, 70, 0.07);
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 25px;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  margin: 18px 0 8px;
+}
+
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #d7dce6;
+  border-radius: 12px;
+  padding: 13px;
+  font-size: 16px;
+  font-family: inherit;
+  background: white;
+}
+
+textarea {
+  min-height: 190px;
+  resize: vertical;
+}
+
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2357ff;
+  box-shadow: 0 0 0 3px rgba(35, 87, 255, 0.12);
+}
+
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.primary {
+  width: 100%;
+  margin-top: 18px;
+  background: #2357ff;
+  color: white;
+}
+
+.primary:hover {
+  background: #1745dc;
+}
+
+.secondary {
+  background: #eef1f7;
+  color: #172033;
+}
+
+.secondary:hover {
+  background: #e2e6ee;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.actions button {
+  flex: 1;
+}
+
+.out {
+  margin-top: 20px;
+  background: #f7f9fc;
+  border: 1px solid #e1e6ef;
+  border-radius: 14px;
+  padding: 20px;
+  min-height: 150px;
+  white-space: pre-wrap;
+  line-height: 1.65;
+}
+
+.out.empty {
+  color: #8a92a3;
+}
+
+.loading {
+  display: none;
+  text-align: center;
+  color: #687083;
+  margin-top: 15px;
+}
+
+.features {
+  margin-top: 80px;
+}
+
+.features h2 {
+  font-size: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.feature {
+  background: white;
+  border: 1px solid #e1e6ef;
+  border-radius: 18px;
+  padding: 25px;
+}
+
+.feature h3 {
+  margin-top: 0;
+}
+
+.feature p {
+  color: #687083;
+  line-height: 1.6;
+}
+
+footer {
+  text-align: center;
+  color: #8a92a3;
+  padding: 35px 20px;
+  font-size: 14px;
+}
+
+@media (max-width: 800px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 40px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .options {
+    grid-template-columns: 1fr;
+  }
+
+  .header-tag {
+    display: none;
+  }
+
+  main {
+    padding-top: 35px;
+  }
+}
+</style>
+</head>
+
 <body>
-<header><div class="logo">Büro<b>KI</b></div><div>Für kleine Handwerksbetriebe</div></header>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      Büro<span>KI</span>
+    </div>
+
+    <div class="header-tag">
+      Für kleine Handwerksbetriebe
+    </div>
+  </div>
+</header>
+
 <main>
+
 <section class="hero">
-<div><p style="color:#2357ff;font-weight:700">AI-Büroassistent</p>
-<h1>Weniger Büro.<br>Mehr Zeit für Kunden.</h1>
-<p class="lead">Kunden-E-Mails in Sekunden in professionelle deutsche Antworten verwandeln.</p></div>
-<div class="card">
-<h2>E-Mail-Assistent</h2>
-<label>Antwortstil</label><select id="style"><option>Professionell</option><option>Freundlich</option><option>Kurz & direkt</option></select>
-<p><label>Kundennachricht</label></p>
-<textarea id="mail">Hallo, können Sie mir bitte sagen, wann Sie den Auftrag ausführen können? Vielen Dank.</textarea>
-<button onclick="go()">Antwort erstellen</button>
-<div class="out" id="out">Ihre Antwort erscheint hier.</div>
-</div>
+
+  <div>
+    <div class="badge">
+      KI-Büroassistent
+    </div>
+
+    <h1>
+      Weniger Büro.<br>
+      Mehr Zeit für Kunden.
+    </h1>
+
+    <p class="lead">
+      Kunden-E-Mails in Sekunden in professionelle
+      deutsche Antworten verwandeln.
+    </p>
+  </div>
+
+
+  <div class="card">
+
+    <h2>
+      ✉️ E-Mail-Assistent
+    </h2>
+
+    <label for="style">
+      Antwortstil
+    </label>
+
+    <select id="style">
+      <option value="Professionell">Professionell</option>
+      <option value="Freundlich">Freundlich</option>
+      <option value="Kurz und direkt">Kurz und direkt</option>
+      <option value="Sehr höflich">Sehr höflich</option>
+    </select>
+
+
+    <div class="options">
+
+      <div>
+        <label for="length">
+          Länge
+        </label>
+
+        <select id="length">
+          <option value="Kurz">Kurz</option>
+          <option value="Mittel" selected>Mittel</option>
+          <option value="Ausführlich">Ausführlich</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="language">
+          Sprache
+        </label>
+
+        <select id="language">
+          <option value="Deutsch" selected>Deutsch</option>
+      </select>
+      </div>
+
+    </div>
+
+
+    <label for="message">
+      Kundennachricht
+    </label>
+
+    <textarea id="message">Hallo, können Sie mir bitte sagen, wann Sie den Auftrag ausführen können? Vielen Dank.</textarea>
+
+
+    <button
+      class="primary"
+      id="generateButton"
+      onclick="generateAnswer()"
+    >
+      Antwort erstellen
+    </button>
+
+
+    <div class="loading" id="loading">
+      ⏳ Antwort wird erstellt...
+    </div>
+
+
+    <div
+      class="out empty"
+      id="output"
+    >
+      Ihre Antwort erscheint hier.
+    </div>
+
+
+    <div class="actions">
+
+      <button
+        class="secondary"
+        onclick="copyAnswer()"
+      >
+        📋 Kopieren
+      </button>
+
+      <button
+        class="secondary"
+        onclick="clearAll()"
+      >
+        🗑️ Löschen
+      </button>
+
+    </div>
+
+  </div>
+
 </section>
-<section style="margin-top:70px"><h2>Was später dazukommt</h2>
-<div class="grid"><div class="feature"><h3>📧 E-Mails</h3><p>Antworten, Absagen und Erinnerungen.</p></div>
-<div class="feature"><h3>📄 Angebote</h3><p>Angebotsentwürfe aus Stichpunkten.</p></div>
-<div class="feature"><h3>⏰ Termine</h3><p>Terminbestätigungen und Erinnerungen.</p></div></div></section>
+
+
+<section class="features">
+
+  <h2>
+    Was BüroKI für Sie erledigt
+  </h2>
+
+  <div class="grid">
+
+    <div class="feature">
+      <h3>📧 E-Mails</h3>
+      <p>
+        Professionelle Antworten auf Kundenanfragen
+        in wenigen Sekunden erstellen.
+      </p>
+    </div>
+
+    <div class="feature">
+      <h3>📄 Angebote</h3>
+      <p>
+        Texte für Angebote, Rückfragen und
+        Kundenkommunikation schneller formulieren.
+      </p>
+    </div>
+
+    <div class="feature">
+      <h3>⏰ Termine</h3>
+      <p>
+        Höfliche Antworten rund um Termine,
+        Verfügbarkeit und Aufträge erstellen.
+      </p>
+    </div>
+
+    <div class="feature">
+      <h3>💬 Kundenservice</h3>
+      <p>
+        Freundliche und professionelle Kommunikation
+        mit Ihren Kunden.
+      </p>
+    </div>
+
+    <div class="feature">
+      <h3>⚡ Schnell</h3>
+      <p>
+        Keine langen Texte mehr selbst schreiben.
+        Nachricht einfügen und Antwort erstellen.
+      </p>
+    </div>
+
+    <div class="feature">
+      <h3>🔒 Sicher</h3>
+      <p>
+        Der API-Schlüssel bleibt auf dem Server
+        und wird nicht im Browser angezeigt.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
 </main>
+
+
+<footer>
+  BüroKI © 2026 · Weniger Büro. Mehr Zeit für Kunden.
+</footer>
+
+
 <script>
-function go(){let s=document.getElementById('style').value;let a=s==='Kurz & direkt'?'Guten Tag,\n\nvielen Dank für Ihre Nachricht.\n\nWir prüfen den Termin und melden uns schnellstmöglich mit einer konkreten Rückmeldung.\n\nMit freundlichen Grüßen\nIhr Team':s==='Freundlich'?'Guten Tag,\n\nvielen Dank für Ihre Nachricht und Ihr Interesse.\n\nWir prüfen den gewünschten Termin und melden uns schnellstmöglich mit einer konkreten Rückmeldung.\n\nViele Grüße\nIhr Team':'Sehr geehrte Damen und Herren,\n\nvielen Dank für Ihre Nachricht.\n\nWir prüfen den gewünschten Termin und melden uns schnellstmöglich mit einer konkreten Rückmeldung.\n\nMit freundlichen Grüßen\nIhr Team';document.getElementById('out').textContent=a}
-</script></body></html>
+
+async function generateAnswer() {
+
+  const message =
+    document.getElementById("message").value.trim();
+
+  const style =
+    document.getElementById("style").value;
+
+  const length =
+    document.getElementById("length").value;
+
+  const output =
+    document.getElementById("output");
+
+  const loading =
+    document.getElementById("loading");
+
+  const button =
+    document.getElementById("generateButton");
+
+
+  if (!message) {
+
+    output.className = "out";
+    output.textContent =
+      "Bitte geben Sie zuerst eine Kundennachricht ein.";
+
+    return;
+  }
+
+
+  output.className = "out empty";
+  output.textContent = "";
+
+  loading.style.display = "block";
+  button.disabled = true;
+  button.textContent = "Wird erstellt...";
+
+
+  try {
+
+    const response = await fetch(
+      "/api/generate",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          message,
+          style,
+          length
+        })
+      }
+    );
+
+
+    const data = await response.json();
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Fehler beim Erstellen der Antwort."
+      );
+
+    }
+
+
+    output.className = "out";
+    output.textContent =
+      data.answer || "Keine Antwort erhalten.";
+
+  }
+
+  catch (error) {
+
+    output.className = "out";
+    output.textContent =
+      "❌ Fehler: " + error.message;
+
+  }
+
+  finally {
+
+    loading.style.display = "none";
+
+    button.disabled = false;
+    button.textContent = "Antwort erstellen";
+
+  }
+
+}
+
+
+async function copyAnswer() {
+
+  const output =
+    document.getElementById("output");
+
+  const text =
+    output.textContent.trim();
+
+
+  if (
+    !text ||
+    text === "Ihre Antwort erscheint hier."
+  ) {
+    return;
+  }
+
+
+  try {
+
+    await navigator.clipboard.writeText(text);
+
+    alert("Antwort wurde kopiert.");
+
+  }
+
+  catch {
+
+    alert("Kopieren war nicht möglich.");
+
+  }
+
+}
+
+
+function clearAll() {
+
+  document.getElementById("message").value = "";
+
+  const output =
+    document.getElementById("output");
+
+  output.className = "out empty";
+
+  output.textContent =
+    "Ihre Antwort erscheint hier.";
+
+}
+
+</script>
+
+</body>
+</html>
