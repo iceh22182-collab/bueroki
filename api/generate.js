@@ -1,5 +1,12 @@
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
 export default async function handler(req, res) {
-  // فقط POST مجاز است
+
+  // فقط POST
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -7,109 +14,59 @@ export default async function handler(req, res) {
   }
 
   try {
-    // دریافت اطلاعات از سایت
+
     const {
       message,
       style = "Professionell",
-      length = "Mittel"
+      language = "Deutsch"
     } = req.body || {};
 
-    // بررسی پیام
     if (!message || !message.trim()) {
       return res.status(400).json({
-        error: "Bitte geben Sie eine Kundennachricht ein."
+        error: "Bitte geben Sie eine Nachricht ein."
       });
     }
 
-    // بررسی API Key
-    const apiKey = process.env.OPENAI_API_KEY;
+    const prompt = `
+Du bist ein professioneller digitaler Büroassistent
+für einen kleinen Handwerksbetrieb in Deutschland.
 
-    if (!apiKey) {
-      return res.status(500).json({
-        error: "OPENAI_API_KEY wurde nicht gefunden."
-      });
-    }
+Deine Aufgabe ist es, Kundenkommunikation professionell
+und natürlich zu formulieren.
 
-    // دستور اصلی برای هوش مصنوعی
-    const instructions = `
-Du bist "BüroKI", ein professioneller deutscher E-Mail-Assistent
-für kleine Handwerksbetriebe.
-
-Deine Aufgabe:
-Erstelle aus der Kundennachricht eine professionelle Antwort
-auf Deutsch.
-
-Regeln:
-- Schreibe natürlich und menschlich.
-- Sei höflich und professionell.
-- Erfinde keine Termine, Preise, Zusagen oder Fakten.
-- Wenn ein Termin nicht bekannt ist, formuliere vorsichtig.
-- Beziehe dich direkt auf die Nachricht des Kunden.
-- Keine unnötigen Erklärungen über KI.
-- Gib ausschließlich die fertige E-Mail-Antwort zurück.
-- Keine Markdown-Codeblöcke.
-
+Sprache: ${language}
 Antwortstil: ${style}
-Antwortlänge: ${length}
 
 Kundennachricht:
 ${message}
+
+Erstelle eine passende fertige Antwort.
+
+Regeln:
+- Schreibe direkt die fertige Antwort.
+- Keine Erklärung vor der Antwort.
+- Keine erfundenen Termine, Preise oder Zusagen.
+- Wenn Informationen fehlen, formuliere vorsichtig.
+- Bei professionellen Antworten freundlich und seriös bleiben.
 `;
 
-    // OpenAI Responses API
-    const response = await fetch(
-      "https://api.openai.com/v1/responses",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: "gpt-5.6",
-          input: instructions
-        })
-      }
-    );
+    const response = await client.responses.create({
+      model: "gpt-5.6",
+      input: prompt
+    });
 
-    const data = await response.json();
+    const text = response.output_text || "";
 
-    // خطا از OpenAI
-    if (!response.ok) {
-      console.error("OpenAI Error:", data);
-
-      return res.status(response.status).json({
-        error:
-          data?.error?.message ||
-          "Fehler bei der Verbindung mit OpenAI."
-      });
-    }
-
-    // استخراج متن پاسخ
-    const answer =
-      data.output_text ||
-      data.output
-        ?.flatMap(item => item.content || [])
-        ?.find(item => item.type === "output_text")
-        ?.text ||
-      "";
-
-    if (!answer) {
-      return res.status(500).json({
-        error: "Keine Antwort von der KI erhalten."
-      });
-    }
-
-    // ارسال جواب به سایت
     return res.status(200).json({
-      answer: answer.trim()
+      text: text
     });
 
   } catch (error) {
-    console.error("Server Error:", error);
+
+    console.error("OpenAI API Error:", error);
 
     return res.status(500).json({
-      error: "Interner Serverfehler."
+      error: "Die KI konnte nicht erreicht werden."
     });
   }
 }
