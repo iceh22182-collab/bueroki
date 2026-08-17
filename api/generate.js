@@ -1,32 +1,39 @@
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 export default async function handler(req, res) {
+  // فقط POST
   if (req.method !== "POST") {
     return res.status(405).json({
-      error: "Method not allowed"
+      error: "Method not allowed",
     });
   }
 
   try {
-    const { message, style = "Professionell", length = "Mittel" } =
-      req.body || {};
-
-    if (!message || !message.trim()) {
-      return res.status(400).json({
-        error: "Bitte geben Sie eine Kundennachricht ein."
+    // بررسی API Key
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({
+        error: "OPENAI_API_KEY is not configured",
       });
     }
 
-    const apiKey = process.env.OPENAI_API_KEY;
+    const { message, style = "Professionell", length = "Mittel" } =
+      req.body || {};
 
-    if (!apiKey) {
-      return res.status(500).json({
-        error: "OPENAI_API_KEY fehlt in den Vercel Environment Variables."
+    // بررسی پیام
+    if (!message || !message.trim()) {
+      return res.status(400).json({
+        error: "Bitte geben Sie eine Kundennachricht ein.",
       });
     }
 
     const prompt = `
 Du bist ein professioneller Büroassistent für kleine Handwerksbetriebe.
 
-Erstelle eine passende Antwort auf diese Kundennachricht.
+Erstelle eine passende Antwort auf die folgende Kundennachricht.
 
 Sprache: Deutsch
 Stil: ${style}
@@ -39,37 +46,30 @@ Antworte direkt mit der fertigen Nachricht.
 Keine Erklärung davor.
 `;
 
-    const response = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: "gpt-5.6",
-        input: prompt
-      })
+    const response = await client.responses.create({
+      model: "gpt-5.6",
+      input: prompt,
     });
 
-    const data = await response.json();
+    const text = response.output_text;
 
-    if (!response.ok) {
-      console.error("OpenAI Fehler:", data);
-
-      return res.status(response.status).json({
-        error: data?.error?.message || "OpenAI API Fehler"
+    if (!text) {
+      return res.status(500).json({
+        error: "OpenAI returned no text",
       });
     }
 
     return res.status(200).json({
-      text: data.output_text || "Keine Antwort erhalten."
+      text,
+      output: text,
     });
-
   } catch (error) {
-    console.error("Server Fehler:", error);
+    console.error("OPENAI ERROR:", error);
 
     return res.status(500).json({
-      error: error.message || "Interner Serverfehler"
+      error:
+        error?.message ||
+        "Fehler bei der Verbindung mit der OpenAI API",
     });
   }
 }
