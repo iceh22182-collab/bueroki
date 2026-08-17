@@ -1,75 +1,87 @@
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export default async function handler(req, res) {
-  // فقط POST
-  if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Method not allowed",
-    });
-  }
-
   try {
-    // بررسی API Key
-    if (!process.env.OPENAI_API_KEY) {
-      return res.status(500).json({
-        error: "OPENAI_API_KEY is not configured",
+    if (req.method !== "POST") {
+      return res.status(405).json({
+        error: "Method not allowed"
       });
     }
 
-    const { message, style = "Professionell", length = "Mittel" } =
-      req.body || {};
+    const apiKey = process.env.OPENAI_API_KEY;
 
-    // بررسی پیام
+    if (!apiKey) {
+      return res.status(500).json({
+        error: "OPENAI_API_KEY is missing"
+      });
+    }
+
+    const { message } = req.body || {};
+
     if (!message || !message.trim()) {
       return res.status(400).json({
-        error: "Bitte geben Sie eine Kundennachricht ein.",
+        error: "Message is required"
       });
     }
 
     const prompt = `
 Du bist ein professioneller Büroassistent für kleine Handwerksbetriebe.
 
-Erstelle eine passende Antwort auf die folgende Kundennachricht.
-
-Sprache: Deutsch
-Stil: ${style}
-Länge: ${length}
-
-Kundennachricht:
-${message}
+Erstelle eine passende, professionelle und freundliche Antwort auf die folgende Kundennachricht.
 
 Antworte direkt mit der fertigen Nachricht.
 Keine Erklärung davor.
+
+Kundennachricht:
+${message}
 `;
 
-    const response = await client.responses.create({
-      model: "gpt-5.6",
-      input: prompt,
+    const response = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: "gpt-5.6",
+        input: prompt
+      })
     });
 
-    const text = response.output_text;
+    const data = await response.json();
 
-    if (!text) {
-      return res.status(500).json({
-        error: "OpenAI returned no text",
+    if (!response.ok) {
+      console.error("OpenAI API error:", data);
+
+      return res.status(response.status).json({
+        error: data?.error?.message || "OpenAI API error"
+      });
+    }
+
+    const text =
+      data.output_text ||
+      data.output
+        ?.flatMap(item => item.content || [])
+        ?.filter(item => item.type === "output_text")
+        ?.map(item => item.text)
+        ?.join("\n") ||
+      "";
+
+    if (!text.trim()) {
+      console.error("OpenAI returned no text:", data);
+
+      return res.status(502).json({
+        error: "OpenAI returned no text"
       });
     }
 
     return res.status(200).json({
-      text,
-      output: text,
+      text: text.trim()
     });
+
   } catch (error) {
-    console.error("OPENAI ERROR:", error);
+    console.error("Server error:", error);
 
     return res.status(500).json({
-      error:
-        error?.message ||
-        "Fehler bei der Verbindung mit der OpenAI API",
+      error: error.message || "Internal server error"
     });
   }
 }
