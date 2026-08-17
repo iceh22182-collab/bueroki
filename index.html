@@ -3,203 +3,276 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BüroKI – Büroassistent für Handwerksbetriebe</title>
+
+<title>BüroKI – Digitaler Büroassistent</title>
 
 <style>
 *{box-sizing:border-box}
 
 body{
   margin:0;
-  background:#f5f7fb;
+  background:#f4f6fa;
   color:#172033;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 }
 
 header{
-  background:#fff;
-  border-bottom:1px solid #e3e7ef;
-  padding:18px 6%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  background:white;
+  border-bottom:1px solid #e1e5ed;
+  padding:22px 6%;
 }
 
 .logo{
-  font-size:24px;
-  font-weight:800;
+  font-size:26px;
+  font-weight:900;
 }
 
-.logo b{color:#2357ff}
-
-header span{
-  color:#687386;
-  font-size:14px;
+.logo b{
+  color:#2857ff
 }
 
 main{
   max-width:1100px;
   margin:auto;
-  padding:30px 20px 60px;
+  padding:45px 20px 80px
 }
 
 .hero{
-  margin-bottom:25px;
+  margin-bottom:30px
 }
 
-.hero h1{
-  margin:0 0 8px;
-  font-size:38px;
+h1{
+  font-size:46px;
+  line-height:1.05;
+  margin:10px 0 15px
 }
 
-.hero p{
-  margin:0;
-  color:#687386;
+h2{
+  font-size:30px;
+}
+
+h3{
+  margin-top:0
+}
+
+.lead{
+  color:#69758a;
+  font-size:19px;
+  line-height:1.6
 }
 
 .nav{
   display:flex;
-  gap:8px;
-  overflow:auto;
-  margin:25px 0;
-  padding-bottom:5px;
+  gap:10px;
+  overflow-x:auto;
+  padding:15px 0 25px;
 }
 
 .nav button{
+  margin:0;
   white-space:nowrap;
-  border:1px solid #dce2ec;
-  background:#fff;
-  color:#39445a;
-  padding:11px 15px;
-  border-radius:10px;
-  font-weight:700;
-  cursor:pointer;
+  background:white;
+  color:#34405a;
+  border:1px solid #dbe1ec;
 }
 
 .nav button.active{
-  background:#2357ff;
+  background:#2857ff;
   color:white;
-  border-color:#2357ff;
+  border-color:#2857ff;
 }
-
-.page{display:none}
-.page.active{display:block}
 
 .card{
-  background:#fff;
-  border:1px solid #e1e6ef;
-  border-radius:16px;
-  padding:22px;
-  margin-bottom:18px;
-  box-shadow:0 6px 22px rgba(0,0,0,.04);
+  background:white;
+  border:1px solid #e0e5ee;
+  border-radius:20px;
+  padding:28px;
+  margin-bottom:25px;
+  box-shadow:0 10px 30px rgba(0,0,0,.04)
 }
 
-.card h2{
-  margin-top:0;
+.page{
+  display:none
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
+.page.active{
+  display:block
 }
 
 label{
   display:block;
   font-weight:700;
-  margin:12px 0 6px;
+  margin:18px 0 8px
 }
 
-input,select,textarea{
+input,
+textarea,
+select{
   width:100%;
-  padding:12px;
-  border:1px solid #d8deea;
-  border-radius:9px;
+  padding:14px;
+  border:1px solid #d7dce5;
+  border-radius:10px;
   font:inherit;
-  background:#fff;
+  background:white
 }
 
 textarea{
-  min-height:130px;
-  resize:vertical;
+  min-height:150px;
+  resize:vertical
 }
 
-button.primary{
-  margin-top:15px;
-  background:#2357ff;
-  color:white;
+button{
   border:0;
-  border-radius:9px;
-  padding:12px 18px;
+  border-radius:10px;
+  padding:13px 20px;
+  background:#2857ff;
+  color:white;
   font-weight:800;
+  font-size:15px;
   cursor:pointer;
+  margin-top:15px
 }
 
 button.secondary{
-  margin-top:15px;
   background:#eef2ff;
-  color:#2357ff;
-  border:0;
-  border-radius:9px;
-  padding:12px 18px;
-  font-weight:800;
-  cursor:pointer;
+  color:#2857ff
 }
 
-.stats{
+button.danger{
+  background:#ef4444
+}
+
+.grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:14px;
+  gap:15px;
+  margin-bottom:25px
 }
 
 .stat{
-  background:#fff;
-  border:1px solid #e1e6ef;
-  border-radius:14px;
-  padding:18px;
+  background:white;
+  border:1px solid #e0e5ee;
+  border-radius:15px;
+  padding:20px
+}
+
+.stat span{
+  display:block;
+  color:#69758a;
+  margin-bottom:8px
 }
 
 .stat strong{
-  display:block;
-  font-size:25px;
-  margin-top:5px;
+  font-size:30px
 }
 
-.muted{
-  color:#687386;
+.list{
+  margin-top:25px
 }
 
-.invoice{
-  border:1px solid #dfe4ed;
+.item{
+  border:1px solid #e0e5ee;
   border-radius:12px;
-  padding:18px;
-  margin-top:15px;
-}
-
-.invoice-header{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-}
-
-.total{
-  font-size:22px;
-  font-weight:800;
-  text-align:right;
+  padding:16px;
+  margin-top:10px;
+  background:#fafbfe
 }
 
 .out{
-  margin-top:15px;
-  background:#f7f8fc;
-  border-radius:10px;
-  padding:18px;
+  margin-top:20px;
+  background:#f5f7fb;
+  border-radius:12px;
+  padding:20px;
   white-space:pre-wrap;
-  line-height:1.6;
+  line-height:1.7;
+  min-height:80px
 }
 
-@media(max-width:750px){
-  header span{display:none}
-  .hero h1{font-size:30px}
-  .grid,.stats{grid-template-columns:1fr}
+.invoice{
+  background:white;
+  border:1px solid #dfe4ec;
+  padding:30px;
+  border-radius:12px;
+  margin-top:25px
+}
+
+.invoice table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:25px
+}
+
+.invoice th,
+.invoice td{
+  padding:12px;
+  border-bottom:1px solid #ddd;
+  text-align:left
+}
+
+.total{
+  text-align:right;
+  margin-top:20px;
+  font-size:22px;
+  font-weight:800
+}
+
+.small{
+  color:#69758a;
+  font-size:14px
+}
+
+@media(max-width:800px){
+  .grid{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  h1{
+    font-size:38px
+  }
+}
+
+@media(max-width:500px){
+  .grid{
+    grid-template-columns:1fr
+  }
+
+  main{
+    padding:30px 14px
+  }
+
+  .card{
+    padding:20px
+  }
+}
+
+@media print{
+  body{
+    background:white
+  }
+
+  header,
+  .hero,
+  .nav,
+  .no-print{
+    display:none!important
+  }
+
+  main{
+    padding:0
+  }
+
+  .page{
+    display:none!important
+  }
+
+  #invoicePage{
+    display:block!important
+  }
+
+  .invoice{
+    border:0;
+    box-shadow:none
+  }
 }
 </style>
 </head>
@@ -208,23 +281,46 @@ button.secondary{
 
 <header>
   <div class="logo">Büro<b>KI</b></div>
-  <span>Digitaler Büroassistent für Handwerksbetriebe</span>
 </header>
 
 <main>
 
 <section class="hero">
-  <h1>Weniger Büro. Mehr Zeit für Kunden.</h1>
-  <p>Dein digitaler Büroassistent für Kunden, Angebote, Rechnungen und E-Mails.</p>
+  <p style="color:#2857ff;font-weight:800">Digitaler Büroassistent für Handwerksbetriebe</p>
+
+  <h1>Weniger Büro.<br>Mehr Zeit für Kunden.</h1>
+
+  <p class="lead">
+    Kunden, Leistungen, Rechnungen und E-Mails einfach an einem Ort verwalten.
+  </p>
 </section>
 
-<div class="nav">
-  <button class="active" onclick="showPage('dashboard',this)">🏠 Übersicht</button>
-  <button onclick="showPage('company',this)">🏢 Unternehmen</button>
-  <button onclick="showPage('customers',this)">👥 Kunden</button>
-  <button onclick="showPage('services',this)">📦 Leistungen</button>
-  <button onclick="showPage('invoice',this)">🧾 Rechnung</button>
-  <button onclick="showPage('email',this)">✉️ E-Mail-KI</button>
+<div class="nav no-print">
+
+  <button onclick="showPage('dashboard',this)" class="active">
+    🏠 Übersicht
+  </button>
+
+  <button onclick="showPage('company',this)">
+    🏢 Unternehmen
+  </button>
+
+  <button onclick="showPage('customers',this)">
+    👥 Kunden
+  </button>
+
+  <button onclick="showPage('services',this)">
+    📦 Leistungen
+  </button>
+
+  <button onclick="showPage('invoicePage',this)">
+    🧾 Rechnung
+  </button>
+
+  <button onclick="showPage('email',this)">
+    ✉️ E-Mail-KI
+  </button>
+
 </div>
 
 
@@ -232,36 +328,44 @@ button.secondary{
 
 <section id="dashboard" class="page active">
 
-<div class="stats">
-  <div class="stat">
-    Kunden
-    <strong id="customerCount">0</strong>
+  <div class="grid">
+
+    <div class="stat">
+      <span>Kunden</span>
+      <strong id="customerCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <span>Leistungen</span>
+      <strong id="serviceCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <span>Rechnungen</span>
+      <strong id="invoiceCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <span>Umsatz</span>
+      <strong id="revenue">0,00 €</strong>
+    </div>
+
   </div>
 
-  <div class="stat">
-    Leistungen
-    <strong id="serviceCount">0</strong>
-  </div>
+  <div class="card">
 
-  <div class="stat">
-    Rechnungen
-    <strong id="invoiceCount">0</strong>
-  </div>
+    <h2>Willkommen bei BüroKI 👋</h2>
 
-  <div class="stat">
-    Umsatz
-    <strong id="revenue">0,00 €</strong>
-  </div>
-</div>
+    <p class="lead">
+      Richte zuerst dein Unternehmen ein. Danach kannst du Kunden,
+      Leistungen, Rechnungen und E-Mails verwalten.
+    </p>
 
-<div class="card" style="margin-top:20px">
-  <h2>Willkommen bei BüroKI 👋</h2>
-  <p class="muted">
-    Richte zuerst dein Unternehmen ein. Danach kannst du Kunden,
-    Leistungen und Rechnungen verwalten.
-  </p>
-  <button class="primary" onclick="openCompany()">Unternehmen einrichten</button>
-</div>
+    <button onclick="showPageById('company')">
+      Unternehmen einrichten
+    </button>
+
+  </div>
 
 </section>
 
@@ -270,60 +374,45 @@ button.secondary{
 
 <section id="company" class="page">
 
-<div class="card">
-  <h2>🏢 Unternehmensprofil</h2>
-  <p class="muted">Diese Angaben werden später automatisch auf Angeboten und Rechnungen verwendet.</p>
+  <div class="card">
 
-  <div class="grid">
+    <h2>🏢 Unternehmensprofil</h2>
 
-    <div>
-      <label>Firmenname</label>
-      <input id="companyName" placeholder="Muster Handwerk GmbH">
-    </div>
+    <p class="lead">
+      Diese Angaben werden später automatisch für Angebote und Rechnungen verwendet.
+    </p>
 
-    <div>
-      <label>Inhaber</label>
-      <input id="owner" placeholder="Max Mustermann">
-    </div>
+    <label>Firmenname</label>
+    <input id="companyName" placeholder="Muster Handwerk GmbH">
 
-    <div>
-      <label>Straße & Hausnummer</label>
-      <input id="address" placeholder="Musterstraße 10">
-    </div>
+    <label>Inhaber</label>
+    <input id="owner" placeholder="Max Mustermann">
 
-    <div>
-      <label>PLZ & Ort</label>
-      <input id="city" placeholder="10115 Berlin">
-    </div>
+    <label>Straße & Hausnummer</label>
+    <input id="companyStreet" placeholder="Musterstraße 10">
 
-    <div>
-      <label>Telefon</label>
-      <input id="phone" placeholder="+49 30 12345678">
-    </div>
+    <label>PLZ & Ort</label>
+    <input id="companyCity" placeholder="10115 Berlin">
 
-    <div>
-      <label>E-Mail</label>
-      <input id="companyEmail" placeholder="info@firma.de">
-    </div>
+    <label>Telefon</label>
+    <input id="companyPhone" placeholder="+49 30 12345678">
 
-    <div>
-      <label>Steuernummer</label>
-      <input id="taxNumber" placeholder="12/345/67890">
-    </div>
+    <label>E-Mail</label>
+    <input id="companyEmail" placeholder="info@firma.de">
 
-    <div>
-      <label>USt-IdNr.</label>
-      <input id="vatId" placeholder="DE123456789">
-    </div>
+    <label>Steuernummer</label>
+    <input id="taxNumber" placeholder="12/345/67890">
+
+    <label>USt-IdNr.</label>
+    <input id="vatNumber" placeholder="DE123456789">
+
+    <button onclick="saveCompany()">
+      Unternehmen speichern
+    </button>
+
+    <div id="companyMessage" class="out"></div>
 
   </div>
-
-  <button class="primary" onclick="saveCompany()">Unternehmen speichern</button>
-
-  <div id="companySaved" class="out" style="display:none">
-    ✅ Unternehmensdaten gespeichert.
-  </div>
-</div>
 
 </section>
 
@@ -332,38 +421,37 @@ button.secondary{
 
 <section id="customers" class="page">
 
-<div class="card">
-  <h2>👥 Kunden</h2>
+  <div class="card">
 
-  <div class="grid">
-    <div>
-      <label>Name</label>
-      <input id="customerName" placeholder="Max Mustermann">
-    </div>
+    <h2>👥 Kunden</h2>
 
-    <div>
-      <label>E-Mail</label>
-      <input id="customerEmail" placeholder="kunde@email.de">
-    </div>
+    <label>Name</label>
+    <input id="customerName" placeholder="Max Mustermann">
 
-    <div>
-      <label>Straße</label>
-      <input id="customerAddress" placeholder="Kundenstraße 5">
-    </div>
+    <label>E-Mail</label>
+    <input id="customerEmail" placeholder="kunde@email.de">
 
-    <div>
-      <label>PLZ & Ort</label>
-      <input id="customerCity" placeholder="10115 Berlin">
-    </div>
+    <label>Straße</label>
+    <input id="customerStreet" placeholder="Kundenstraße 5">
+
+    <label>PLZ & Ort</label>
+    <input id="customerCity" placeholder="10115 Berlin">
+
+    <button onclick="saveCustomer()">
+      Kunde speichern
+    </button>
+
   </div>
 
-  <button class="primary" onclick="addCustomer()">Kunde speichern</button>
-</div>
+  <div class="card">
 
-<div class="card">
-  <h2>Gespeicherte Kunden</h2>
-  <div id="customerList" class="muted">Noch keine Kunden vorhanden.</div>
-</div>
+    <h2>Gespeicherte Kunden</h2>
+
+    <div id="customerList">
+      Noch keine Kunden vorhanden.
+    </div>
+
+  </div>
 
 </section>
 
@@ -372,104 +460,123 @@ button.secondary{
 
 <section id="services" class="page">
 
-<div class="card">
-  <h2>📦 Leistungen & Produkte</h2>
+  <div class="card">
 
-  <div class="grid">
-    <div>
-      <label>Bezeichnung</label>
-      <input id="serviceName" placeholder="Wand streichen">
-    </div>
+    <h2>📦 Leistungen & Produkte</h2>
 
-    <div>
-      <label>Preis netto (€)</label>
-      <input id="servicePrice" type="number" step="0.01" placeholder="250">
-    </div>
+    <label>Bezeichnung</label>
+    <input id="serviceName" placeholder="Wand streichen">
 
-    <div>
-      <label>Einheit</label>
-      <select id="serviceUnit">
-        <option>Stück</option>
-        <option>Stunde</option>
-        <option>m²</option>
-        <option>Pauschal</option>
-      </select>
-    </div>
+    <label>Preis netto (€)</label>
+    <input id="servicePrice" type="number" step="0.01" placeholder="250">
 
-    <div>
-      <label>MwSt.</label>
-      <select id="serviceVat">
-        <option value="19">19%</option>
-        <option value="7">7%</option>
-        <option value="0">0%</option>
-      </select>
-    </div>
+    <label>Einheit</label>
+    <select id="serviceUnit">
+      <option>Stück</option>
+      <option>Stunde</option>
+      <option>Meter</option>
+      <option>m²</option>
+      <option>Pauschal</option>
+    </select>
+
+    <label>MwSt.</label>
+    <select id="serviceVat">
+      <option value="19">19%</option>
+      <option value="7">7%</option>
+      <option value="0">0%</option>
+    </select>
+
+    <button onclick="saveService()">
+      Leistung speichern
+    </button>
+
   </div>
 
-  <button class="primary" onclick="addService()">Leistung speichern</button>
-</div>
+  <div class="card">
 
-<div class="card">
-  <h2>Gespeicherte Leistungen</h2>
-  <div id="serviceList" class="muted">Noch keine Leistungen vorhanden.</div>
-</div>
+    <h2>Gespeicherte Leistungen</h2>
+
+    <div id="serviceList">
+      Noch keine Leistungen vorhanden.
+    </div>
+
+  </div>
 
 </section>
 
 
 <!-- INVOICE -->
 
-<section id="invoice" class="page">
+<section id="invoicePage" class="page">
 
-<div class="card">
-  <h2>🧾 Rechnung erstellen</h2>
+  <div class="card no-print">
 
-  <label>Kunde</label>
-  <select id="invoiceCustomer"></select>
+    <h2>🧾 Rechnung erstellen</h2>
 
-  <label>Leistung</label>
-  <select id="invoiceService"></select>
+    <label>Kunde</label>
+    <select id="invoiceCustomer">
+      <option value="">Kunde auswählen</option>
+    </select>
 
-  <label>Menge</label>
-  <input id="invoiceQty" type="number" value="1" min="1">
+    <label>Leistung</label>
+    <select id="invoiceService">
+      <option value="">Leistung auswählen</option>
+    </select>
 
-  <button class="primary" onclick="createInvoice()">Rechnung erstellen</button>
+    <label>Menge</label>
+    <input id="invoiceQuantity" type="number" value="1" min="1">
 
-  <div id="invoiceResult"></div>
-</div>
+    <button onclick="createInvoice()">
+      Rechnung erstellen
+    </button>
+
+  </div>
+
+  <div id="invoiceOutput"></div>
 
 </section>
 
 
-<!-- EMAIL -->
+<!-- EMAIL AI -->
 
 <section id="email" class="page">
 
-<div class="card">
-  <h2>✉️ E-Mail-Assistent</h2>
-  <p class="muted">
-    Kunden-E-Mails in professionelle deutsche Antworten verwandeln.
-  </p>
+  <div class="card">
 
-  <label>Antwortstil</label>
-  <select id="emailStyle">
-    <option>Professionell</option>
-    <option>Freundlich</option>
-    <option>Kurz & direkt</option>
-  </select>
+    <h2>✉️ E-Mail-Assistent</h2>
 
-  <label>Kundennachricht</label>
-  <textarea id="customerMessage"
-  placeholder="Hier die E-Mail des Kunden einfügen..."></textarea>
+    <p class="lead">
+      Kunden-E-Mails mit künstlicher Intelligenz in professionelle
+      deutsche Antworten verwandeln.
+    </p>
 
-  <button class="primary" onclick="generateEmail()">Antwort erstellen</button>
+    <label>Antwortstil</label>
 
-  <div id="emailResult" class="out">
-    Ihre Antwort erscheint hier.
+    <select id="style">
+      <option>Professionell</option>
+      <option>Freundlich</option>
+      <option>Kurz & direkt</option>
+    </select>
+
+    <label>Kundennachricht</label>
+
+    <textarea
+      id="mail"
+      placeholder="Hier die E-Mail des Kunden einfügen..."
+    ></textarea>
+
+    <button onclick="go()" id="emailButton">
+      Antwort erstellen
+    </button>
+
+    <div class="out" id="out">
+      Ihre Antwort erscheint hier.
+    </div>
+
   </div>
-</div>
 
 </section>
+
 
 </main>
 
@@ -477,60 +584,97 @@ button.secondary{
 <script>
 
 let customers =
-JSON.parse(localStorage.getItem("bueroki_customers") || "[]");
+  JSON.parse(localStorage.getItem("bueroKI_customers") || "[]");
 
 let services =
-JSON.parse(localStorage.getItem("bueroki_services") || "[]");
+  JSON.parse(localStorage.getItem("bueroKI_services") || "[]");
 
 let invoices =
-JSON.parse(localStorage.getItem("bueroki_invoices") || "[]");
+  JSON.parse(localStorage.getItem("bueroKI_invoices") || "[]");
 
 
-function showPage(id,button){
+function showPage(id, button){
 
-  document.querySelectorAll(".page")
-    .forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(function(page){
+    page.classList.remove("active");
+  });
 
-  document.getElementById(id)
-    .classList.add("active");
+  document.getElementById(id).classList.add("active");
 
-  document.querySelectorAll(".nav button")
-    .forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".nav button").forEach(function(btn){
+    btn.classList.remove("active");
+  });
 
-  button.classList.add("active");
+  if(button){
+    button.classList.add("active");
+  }
 
-  refresh();
+  updateDashboard();
+  renderCustomers();
+  renderServices();
+  updateInvoiceSelects();
 }
 
 
-function openCompany(){
-  document.querySelectorAll(".nav button")[1].click();
+function showPageById(id){
+
+  document.querySelectorAll(".page").forEach(function(page){
+    page.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".nav button").forEach(function(btn){
+    btn.classList.remove("active");
+  });
 }
 
 
 function saveCompany(){
 
-  let company={
+  const company = {
     name:document.getElementById("companyName").value,
     owner:document.getElementById("owner").value,
-    address:document.getElementById("address").value,
-    city:document.getElementById("city").value,
-    phone:document.getElementById("phone").value,
+    street:document.getElementById("companyStreet").value,
+    city:document.getElementById("companyCity").value,
+    phone:document.getElementById("companyPhone").value,
     email:document.getElementById("companyEmail").value,
     tax:document.getElementById("taxNumber").value,
-    vat:document.getElementById("vatId").value
+    vat:document.getElementById("vatNumber").value
   };
 
-  localStorage.setItem("bueroki_company",
-    JSON.stringify(company));
+  localStorage.setItem(
+    "bueroKI_company",
+    JSON.stringify(company)
+  );
 
-  document.getElementById("companySaved").style.display="block";
+  document.getElementById("companyMessage").textContent =
+    "Unternehmensdaten wurden gespeichert.";
 }
 
 
-function addCustomer(){
+function loadCompany(){
 
-  let name=document.getElementById("customerName").value.trim();
+  const company =
+    JSON.parse(localStorage.getItem("bueroKI_company") || "null");
+
+  if(!company) return;
+
+  document.getElementById("companyName").value = company.name || "";
+  document.getElementById("owner").value = company.owner || "";
+  document.getElementById("companyStreet").value = company.street || "";
+  document.getElementById("companyCity").value = company.city || "";
+  document.getElementById("companyPhone").value = company.phone || "";
+  document.getElementById("companyEmail").value = company.email || "";
+  document.getElementById("taxNumber").value = company.tax || "";
+  document.getElementById("vatNumber").value = company.vat || "";
+}
+
+
+function saveCustomer(){
+
+  const name =
+    document.getElementById("customerName").value.trim();
 
   if(!name){
     alert("Bitte Kundennamen eingeben.");
@@ -540,28 +684,64 @@ function addCustomer(){
   customers.push({
     name:name,
     email:document.getElementById("customerEmail").value,
-    address:document.getElementById("customerAddress").value,
+    street:document.getElementById("customerStreet").value,
     city:document.getElementById("customerCity").value
   });
 
   localStorage.setItem(
-    "bueroki_customers",
+    "bueroKI_customers",
     JSON.stringify(customers)
   );
 
   document.getElementById("customerName").value="";
   document.getElementById("customerEmail").value="";
-  document.getElementById("customerAddress").value="";
+  document.getElementById("customerStreet").value="";
   document.getElementById("customerCity").value="";
 
-  refresh();
+  renderCustomers();
+  updateDashboard();
 }
 
 
-function addService(){
+function renderCustomers(){
 
-  let name=document.getElementById("serviceName").value.trim();
-  let price=parseFloat(document.getElementById("servicePrice").value);
+  const list =
+    document.getElementById("customerList");
+
+  if(customers.length === 0){
+    list.textContent="Noch keine Kunden vorhanden.";
+    return;
+  }
+
+  list.innerHTML="";
+
+  customers.forEach(function(c,index){
+
+    const div=document.createElement("div");
+    div.className="item";
+
+    div.innerHTML=
+      "<strong>"+escapeHTML(c.name)+"</strong><br>"+
+      "<span class='small'>"+
+      escapeHTML(c.email || "")+
+      "<br>"+
+      escapeHTML(c.street || "")+
+      "<br>"+
+      escapeHTML(c.city || "")+
+      "</span>";
+
+    list.appendChild(div);
+  });
+}
+
+
+function saveService(){
+
+  const name =
+    document.getElementById("serviceName").value.trim();
+
+  const price =
+    parseFloat(document.getElementById("servicePrice").value);
 
   if(!name || isNaN(price)){
     alert("Bitte Bezeichnung und Preis eingeben.");
@@ -576,230 +756,345 @@ function addService(){
   });
 
   localStorage.setItem(
-    "bueroki_services",
+    "bueroKI_services",
     JSON.stringify(services)
   );
 
   document.getElementById("serviceName").value="";
   document.getElementById("servicePrice").value="";
 
-  refresh();
+  renderServices();
+  updateDashboard();
+}
+
+
+function renderServices(){
+
+  const list =
+    document.getElementById("serviceList");
+
+  if(services.length === 0){
+    list.textContent="Noch keine Leistungen vorhanden.";
+    return;
+  }
+
+  list.innerHTML="";
+
+  services.forEach(function(s){
+
+    const div=document.createElement("div");
+    div.className="item";
+
+    div.innerHTML=
+      "<strong>"+escapeHTML(s.name)+"</strong><br>"+
+      "<span class='small'>"+
+      s.price.toFixed(2)+" € netto · "+
+      escapeHTML(s.unit)+" · MwSt. "+
+      s.vat+"%"+
+      "</span>";
+
+    list.appendChild(div);
+  });
+}
+
+
+function updateInvoiceSelects(){
+
+  const customerSelect =
+    document.getElementById("invoiceCustomer");
+
+  const serviceSelect =
+    document.getElementById("invoiceService");
+
+  customerSelect.innerHTML =
+    '<option value="">Kunde auswählen</option>';
+
+  serviceSelect.innerHTML =
+    '<option value="">Leistung auswählen</option>';
+
+  customers.forEach(function(c,index){
+
+    const option=document.createElement("option");
+
+    option.value=index;
+    option.textContent=c.name;
+
+    customerSelect.appendChild(option);
+  });
+
+  services.forEach(function(s,index){
+
+    const option=document.createElement("option");
+
+    option.value=index;
+    option.textContent =
+      s.name+" – "+s.price.toFixed(2)+" € netto";
+
+    serviceSelect.appendChild(option);
+  });
 }
 
 
 function createInvoice(){
 
-  let ci=document.getElementById("invoiceCustomer").value;
-  let si=document.getElementById("invoiceService").value;
+  const customerIndex =
+    document.getElementById("invoiceCustomer").value;
 
-  if(ci==="" || si===""){
+  const serviceIndex =
+    document.getElementById("invoiceService").value;
+
+  const quantity =
+    parseFloat(document.getElementById("invoiceQuantity").value);
+
+  if(customerIndex === "" || serviceIndex === ""){
     alert("Bitte Kunde und Leistung auswählen.");
     return;
   }
 
-  let customer=customers[ci];
-  let service=services[si];
+  const customer=customers[customerIndex];
+  const service=services[serviceIndex];
 
-  let qty=parseFloat(document.getElementById("invoiceQty").value) || 1;
+  const net =
+    service.price * quantity;
 
-  let netto=service.price*qty;
-  let vat=netto*service.vat/100;
-  let total=netto+vat;
+  const vat =
+    net * service.vat / 100;
 
-  let number="RE-"+Date.now();
+  const gross =
+    net + vat;
 
-  invoices.push({
+  const number =
+    "RE-"+new Date().getTime();
+
+  const invoice={
     number:number,
-    customer:customer.name,
-    service:service.name,
-    netto:netto,
+    customer:customer,
+    service:service,
+    quantity:quantity,
+    net:net,
     vat:vat,
-    total:total
-  });
+    gross:gross,
+    date:new Date().toLocaleDateString("de-DE")
+  };
+
+  invoices.push(invoice);
 
   localStorage.setItem(
-    "bueroki_invoices",
+    "bueroKI_invoices",
     JSON.stringify(invoices)
   );
 
-  document.getElementById("invoiceResult").innerHTML=`
-
-  <div class="invoice">
-
-    <div class="invoice-header">
-      <div>
-        <strong>RECHNUNG</strong><br>
-        ${number}
-      </div>
-
-      <div>
-        <strong>${customer.name}</strong><br>
-        ${customer.address || ""}<br>
-        ${customer.city || ""}
-      </div>
-    </div>
-
-    <hr>
-
-    <p>
-      ${service.name}<br>
-      ${qty} × ${service.price.toFixed(2)} €
-    </p>
-
-    <p>Netto: ${netto.toFixed(2)} €</p>
-    <p>MwSt. (${service.vat}%): ${vat.toFixed(2)} €</p>
-
-    <div class="total">
-      Gesamt: ${total.toFixed(2)} €
-    </div>
-
-    <button class="secondary" onclick="window.print()">
-      🖨️ Rechnung drucken
-    </button>
-
-  </div>
-
-  `;
-
-  refresh();
+  renderInvoice(invoice);
+  updateDashboard();
 }
 
 
-function generateEmail(){
+function renderInvoice(invoice){
 
-  let style=document.getElementById("emailStyle").value;
+  const company =
+    JSON.parse(
+      localStorage.getItem("bueroKI_company") || "null"
+    ) || {};
 
-  let message=document.getElementById("customerMessage").value.trim();
+  document.getElementById("invoiceOutput").innerHTML = `
+
+    <div class="invoice">
+
+      <h1>RECHNUNG</h1>
+
+      <p>
+        <strong>${escapeHTML(company.name || "Ihre Firma")}</strong><br>
+        ${escapeHTML(company.street || "")}<br>
+        ${escapeHTML(company.city || "")}<br>
+        ${escapeHTML(company.email || "")}
+      </p>
+
+      <hr>
+
+      <p>
+        <strong>Rechnungsnummer:</strong> ${invoice.number}<br>
+        <strong>Datum:</strong> ${invoice.date}
+      </p>
+
+      <h3>Kunde</h3>
+
+      <p>
+        ${escapeHTML(invoice.customer.name)}<br>
+        ${escapeHTML(invoice.customer.street || "")}<br>
+        ${escapeHTML(invoice.customer.city || "")}
+      </p>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Leistung</th>
+            <th>Menge</th>
+            <th>Einheit</th>
+            <th>Preis netto</th>
+            <th>Gesamt</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr>
+            <td>${escapeHTML(invoice.service.name)}</td>
+            <td>${invoice.quantity}</td>
+            <td>${escapeHTML(invoice.service.unit)}</td>
+            <td>${invoice.service.price.toFixed(2)} €</td>
+            <td>${invoice.net.toFixed(2)} €</td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+      <div class="total">
+
+        Netto:
+        ${invoice.net.toFixed(2)} €<br>
+
+        MwSt. ${invoice.service.vat}%:
+        ${invoice.vat.toFixed(2)} €<br>
+
+        Gesamt:
+        ${invoice.gross.toFixed(2)} €
+
+      </div>
+
+      <div class="no-print">
+
+        <button onclick="window.print()">
+          🖨️ Rechnung drucken / PDF
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+function updateDashboard(){
+
+  document.getElementById("customerCount").textContent =
+    customers.length;
+
+  document.getElementById("serviceCount").textContent =
+    services.length;
+
+  document.getElementById("invoiceCount").textContent =
+    invoices.length;
+
+  const revenue =
+    invoices.reduce(function(sum,invoice){
+      return sum + invoice.gross;
+    },0);
+
+  document.getElementById("revenue").textContent =
+    revenue.toLocaleString("de-DE",{
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    })+" €";
+}
+
+
+/* ================================
+   AI EMAIL ASSISTANT
+================================ */
+
+async function go(){
+
+  const style =
+    document.getElementById("style").value;
+
+  const message =
+    document.getElementById("mail").value.trim();
+
+  const out =
+    document.getElementById("out");
+
+  const button =
+    document.getElementById("emailButton");
 
   if(!message){
-    alert("Bitte zuerst eine Kundennachricht eingeben.");
+
+    out.textContent =
+      "Bitte geben Sie zuerst eine Kundennachricht ein.";
+
     return;
   }
 
-  let answer="";
+  button.disabled=true;
+  button.textContent="Antwort wird erstellt...";
 
-  if(style==="Kurz & direkt"){
+  out.textContent="Die KI erstellt gerade eine Antwort...";
 
-    answer=
-`Guten Tag,
+  try{
 
-vielen Dank für Ihre Nachricht.
+    const response =
+      await fetch("/api/generate",{
 
-Wir prüfen den gewünschten Termin und melden uns schnellstmöglich mit einer Rückmeldung.
+        method:"POST",
 
-Mit freundlichen Grüßen
-Ihr Team`;
+        headers:{
+          "Content-Type":"application/json"
+        },
 
-  }else if(style==="Freundlich"){
+        body:JSON.stringify({
+          message:message,
+          style:style
+        })
 
-    answer=
-`Guten Tag,
+      });
 
-vielen Dank für Ihre Nachricht und Ihr Interesse.
+    const data =
+      await response.json();
 
-Wir prüfen den gewünschten Termin und melden uns schnellstmöglich mit einer konkreten Rückmeldung.
+    if(!response.ok){
 
-Viele Grüße
-Ihr Team`;
+      throw new Error(
+        data.error || "Fehler bei der Anfrage."
+      );
 
-  }else{
+    }
 
-    answer=
-`Sehr geehrte Damen und Herren,
+    out.textContent =
+      data.reply || data.message || "Keine Antwort erhalten.";
 
-vielen Dank für Ihre Nachricht.
+  }catch(error){
 
-Wir prüfen den gewünschten Termin und melden uns schnellstmöglich mit einer konkreten Rückmeldung.
+    out.textContent =
+      "Fehler: "+error.message;
 
-Mit freundlichen Grüßen
-Ihr Team`;
+  }finally{
+
+    button.disabled=false;
+    button.textContent="Antwort erstellen";
 
   }
-
-  document.getElementById("emailResult").textContent=answer;
 }
 
 
-function refresh(){
+function escapeHTML(value){
 
-  document.getElementById("customerCount").textContent=
-    customers.length;
-
-  document.getElementById("serviceCount").textContent=
-    services.length;
-
-  document.getElementById("invoiceCount").textContent=
-    invoices.length;
-
-  let revenue=invoices.reduce(
-    (sum,i)=>sum+i.total,0
-  );
-
-  document.getElementById("revenue").textContent=
-    revenue.toLocaleString("de-DE",{
-      style:"currency",
-      currency:"EUR"
-    });
-
-
-  let cl=document.getElementById("customerList");
-
-  if(customers.length===0){
-
-    cl.textContent="Noch keine Kunden vorhanden.";
-
-  }else{
-
-    cl.innerHTML=customers.map((c,i)=>
-      `<div class="invoice">
-        <strong>${i+1}. ${c.name}</strong><br>
-        ${c.email || ""}
-        <br>${c.city || ""}
-      </div>`
-    ).join("");
-  }
-
-
-  let sl=document.getElementById("serviceList");
-
-  if(services.length===0){
-
-    sl.textContent="Noch keine Leistungen vorhanden.";
-
-  }else{
-
-    sl.innerHTML=services.map((s,i)=>
-      `<div class="invoice">
-        <strong>${i+1}. ${s.name}</strong><br>
-        ${s.price.toFixed(2)} € / ${s.unit}
-        · MwSt. ${s.vat}%
-      </div>`
-    ).join("");
-  }
-
-
-  let cs=document.getElementById("invoiceCustomer");
-
-  cs.innerHTML=
-    `<option value="">Kunde auswählen</option>`+
-    customers.map((c,i)=>
-      `<option value="${i}">${c.name}</option>`
-    ).join("");
-
-
-  let ss=document.getElementById("invoiceService");
-
-  ss.innerHTML=
-    `<option value="">Leistung auswählen</option>`+
-    services.map((s,i)=>
-      `<option value="${i}">
-        ${s.name} – ${s.price.toFixed(2)} €
-      </option>`
-    ).join("");
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
 
-refresh();
+/* START */
+
+loadCompany();
+renderCustomers();
+renderServices();
+updateInvoiceSelects();
+updateDashboard();
 
 </script>
 
